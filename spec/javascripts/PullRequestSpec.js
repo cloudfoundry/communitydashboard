@@ -1,5 +1,19 @@
 describe("PullRequestList", function(){
-    it("does something", function(){
-       expect(true).toBe(true);
+  it(".fetchList", function(){
+
+//    debugger
+//    console.log($('*'));
+
+
+
+    spyOn($, 'ajax').andCallFake(function (req) {
+      var d = $.Deferred();
+      d.resolve({});
+      return d.promise();
     });
+
+    PullRequestList.fetchList();
+
+     expect($('.pr-list-spinner').is(':visible')).toBe(false);
+  });
 });
