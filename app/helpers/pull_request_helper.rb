@@ -5,15 +5,22 @@ module PullRequestHelper
 
     issues = client.org_issues(org, filter: 'all')
 
-    pr_urls = issues.map { |i| i.pull_request.rels[:html].try(:href) }
 
-    pr_urls.map do |u|
+    prs = issues.select { |issue| issue.pull_request.rels[:html] }
+    pr_urls = prs.map { |i| i.pull_request.rels[:html].try(:href) }
+
+    r = {}
+
+    pr_urls.each do |u|
       pr_data = parse_uri(u)
 
-      pr = client.pull_request("#{pr_data[:org]}/#{pr_data[:repo]}", pr_data[:id])
-
-      {title: pr.title}
+      r[u] = {
+          'org' => pr_data[:org],
+          'repo' => pr_data[:repo],
+          'id' => pr_data[:id]
+      }
     end
+    r
   end
 
   private

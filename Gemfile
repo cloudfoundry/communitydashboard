@@ -11,21 +11,23 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
-#gem 'therubyracer'
+gem 'therubyracer'
 gem 'bootstrap-sass'
 gem 'octokit'
+gem 'underscore-rails'
 
 group :doc do
   gem 'sdoc', require: false
 end
 
 group :test do
-  gem "capybara-webkit"
+  gem 'capybara-webkit'
+  gem 'webmock'
 end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'webmock'
+  gem 'jasmine'
 end
 
 # Use ActiveModel has_secure_password

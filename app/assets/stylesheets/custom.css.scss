@@ -1,0 +1,16 @@
+@import "bootstrap";
+
+.pr-list-spinner {
+  background: lightgray;
+  height: 200px;
+  margin-left: 45px;
+  border-radius: 15px;
+
+  #spinnerContainer {
+    padding-top: 200px;
+  }
+}
+
+.td-spinner {
+  padding-top: 20px;
+}
