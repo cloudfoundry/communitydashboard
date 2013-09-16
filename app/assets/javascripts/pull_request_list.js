@@ -28,9 +28,8 @@ PullRequestList = {
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       success: function(response){
-        debugger
-          $('.pr-list-spinner').hide()
-          PullRequestList.showInitialList(response);
+        $('#spinnerContainer .spinner').hide()
+        PullRequestList.showInitialList(response);
       },
       failure: function(){
           console.log("Unable to fetch list of pull requests");
@@ -59,9 +58,11 @@ PullRequestList = {
         left: 'auto' // Left position relative to parent in px
     };
 
-    _.each(pr_data, function(value, key){
-       var el = '<tr class="pull"><td class="first-column">1</td><td class="first-column"><div class="td-spinner"></div></td><td>'+key+'</td></tr>';
-       elements += el
+    var index = 1
+    _.each(pr_data, function(value, key, list){
+       var el = '<tr class="pull"><td class="first-column">'+index+'</td><td class="first-column"><div class="td-spinner"></div></td><td>'+key+'</td></tr>';
+       elements += el;
+       index += 1;
     });
 
     $('table').html(elements)
@@ -90,8 +91,8 @@ PullRequestList = {
     });
   }
 };
-//
-//$(document).ready(function(){
-//    PullRequestList.fetchList();
-//});
-//
+
+$(document).ready(function(){
+    PullRequestList.fetchList();
+});
+

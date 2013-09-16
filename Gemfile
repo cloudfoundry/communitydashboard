@@ -26,7 +26,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'jasmine'
+  gem 'jasmine', git: 'git@github.com:pivotal/jasmine-gem.git'
 end
 
 # Use ActiveModel has_secure_password

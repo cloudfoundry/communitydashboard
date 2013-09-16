@@ -3,12 +3,11 @@
 .pr-list-spinner {
   background: lightgray;
   height: 200px;
-  margin-left: 45px;
   border-radius: 15px;
-
-  #spinnerContainer {
-    padding-top: 200px;
-  }
+  background: none repeat scroll 0 0 rgba(255, 255, 255, 0.3);
+  margin-top: 70px;
+  padding: 40px;
+  border-radius: 15px;
 }
 
 .td-spinner {
@@ -21,4 +20,22 @@
 
 .second-column {
   max-width: 50px;
+}
+
+#bg {
+  min-height: 100%;
+  min-width: 1024px;
+  width: 100%;
+  height: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -4;
+}
+
+.cdb-container {
+  background: none repeat scroll 0 0 rgba(255, 255, 255, 0.3);
+  margin-top: 70px;
+  padding: 40px;
+  border-radius: 15px;
 }
