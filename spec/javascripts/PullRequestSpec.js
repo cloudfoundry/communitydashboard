@@ -1,19 +1,20 @@
 describe("PullRequestList", function(){
-  it(".fetchList", function(){
+  describe(".fetchList", function(){
+      describe("on success", function(){
+         it("hides the spinner", function(){
+              spyOn($, 'ajax').andCallFake(function (req) {
+                  var d = $.Deferred();
+                  d.resolve({});
+                  return d.promise();
+              });
 
-//    debugger
-//    console.log($('*'));
+              PullRequestList.fetchList();
 
+              debugger;
 
-
-    spyOn($, 'ajax').andCallFake(function (req) {
-      var d = $.Deferred();
-      d.resolve({});
-      return d.promise();
-    });
-
-    PullRequestList.fetchList();
-
-     expect($('.pr-list-spinner').is(':visible')).toBe(false);
+              expect($('.pr-list-spinner').length).not.toEqual(0);
+              expect($('.pr-list-spinner').is(':visible')).toBe(false);
+         });
+      });
   });
 });

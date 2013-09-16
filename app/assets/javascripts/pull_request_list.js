@@ -29,7 +29,7 @@ PullRequestList = {
       dataType: 'json',
       success: function(response){
         debugger
-//          $('.pr-list-spinner').hide()
+          $('.pr-list-spinner').hide()
           PullRequestList.showInitialList(response);
       },
       failure: function(){

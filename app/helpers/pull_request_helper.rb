@@ -1,29 +1,27 @@
 module PullRequestHelper
 
   def self.fetch(org, token)
-    client = Octokit::Client.new(access_token: token, auto_paginate: true)
-
-    issues = client.org_issues(org, filter: 'all')
-
-
-    prs = issues.select { |issue| issue.pull_request.rels[:html] }
-    pr_urls = prs.map { |i| i.pull_request.rels[:html].try(:href) }
-
-    r = {}
-
-    pr_urls.each do |u|
-      pr_data = parse_uri(u)
-
-      r[u] = {
+    result = {}
+    fetch_url_list(org, token).each do |url|
+      pr_data = parse_uri(url)
+      result[url] = {
           'org' => pr_data[:org],
           'repo' => pr_data[:repo],
           'id' => pr_data[:id]
       }
     end
-    r
+    result
   end
 
   private
+
+  def self.fetch_url_list(org, token)
+    client = Octokit::Client.new(access_token: token, auto_paginate: true)
+
+    issues = client.org_issues(org, filter: 'all')
+    prs = issues.select { |issue| issue.pull_request.rels[:html] }
+    prs.map { |issue| issue.pull_request.rels[:html].try(:href) }
+  end
 
   def self.parse_uri(uri)
     parts = URI(uri).path.split('/')
