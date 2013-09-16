@@ -17,6 +17,7 @@ PullRequestList = {
       zIndex: 2e9, // The z-index (defaults to 2000000000)
       top: 'auto', // Top position relative to parent in px
       left: 'auto' // Left position relative to parent in px
+
     };
 
     var target = document.getElementById('spinnerContainer');
@@ -38,7 +39,7 @@ PullRequestList = {
   },
 
   showInitialList: function(pr_data){
-    elements = '<tr><th class="first-column"></th><th class="second-column"></th><th>Pull Requests for CloudFoundry</th></tr>'
+    var elements = ''
     var opts = {
         lines: 11, // The number of lines to draw
         length: 5, // The length of each line
@@ -54,40 +55,41 @@ PullRequestList = {
         hwaccel: false, // Whether to use hardware acceleration
         className: 'spinner', // The CSS class to assign to the spinner
         zIndex: 2e9, // The z-index (defaults to 2000000000)
-        top: 'auto', // Top position relative to parent in px
-        left: 'auto' // Left position relative to parent in px
+        top: 0, // Top position relative to parent in px
+        left: -30 // Left position relative to parent in px
     };
 
     var index = 1
-    _.each(pr_data, function(value, key, list){
-       var el = '<tr class="pull"><td class="first-column">'+index+'</td><td class="first-column"><div class="td-spinner"></div></td><td>'+key+'</td></tr>';
+    _.each(pr_data, function(value, key){
+       var el = '<li class="li-pull"><div class="li-spinner"><div>'+key+'</div></li>';
        elements += el;
        index += 1;
     });
 
-    $('table').html(elements)
+    $('ul').html(elements)
 
-    $('table tr').each(function(value, element){
-      if( element.children[0].textContent != "" ){
+    $('ul li').each(function(value, element){
+        console.log(value + "::" + element );
 
-        var target = element.children[1].getElementsByClassName('td-spinner')[0];
+        var target = element.getElementsByClassName('li-spinner')[0];
         var spinner = new Spinner(opts).spin(target);
 
         $.ajax({
           type:"GET",
-          url: "pulls/"+pr_data[element.children[2].textContent].id,
+          url: "pulls/"+pr_data[element.textContent].id,
           contentType: 'application/json; charset=utf-8',
           dataType: 'json',
-          data: {org:'cloudfoundry', repo: pr_data[element.children[2].textContent].repo },
+          data: {org:'cloudfoundry', repo: pr_data[element.textContent].repo },
           success: function(response){
-            $(element.getElementsByClassName('td-spinner')[0]).hide();
-            url = element.children[2].textContent;
-            $(element.children[2]).html('<a href='+url+'>'+response.title+'</a>');
+              debugger;
+            $(element.getElementsByClassName('li-spinner')[0]).hide();
+            var url = element.textContent;
+            var repo = 'cloudfoundry/' + pr_data[element.textContent].repo;
+            $(element).html('<a href=https://github.com/'+repo+'>'+repo+'</a> - <a href='+url+'>'+response.title+'</a>');
           },
           failure: function(){
           }
         });
-      }
     });
   }
 };
