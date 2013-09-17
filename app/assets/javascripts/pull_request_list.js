@@ -81,11 +81,10 @@ PullRequestList = {
           dataType: 'json',
           data: {org:'cloudfoundry', repo: pr_data[element.textContent].repo },
           success: function(response){
-              debugger;
             $(element.getElementsByClassName('li-spinner')[0]).hide();
             var url = element.textContent;
             var repo = 'cloudfoundry/' + pr_data[element.textContent].repo;
-            $(element).html('<a href=https://github.com/'+repo+'>'+repo+'</a> - <a href='+url+'>'+response.title+'</a>');
+            $(element).html('<a class="repolink" href=https://github.com/'+repo+'>'+repo+'</a> - <a href='+url+'>'+response.title+'</a>');
           },
           failure: function(){
           }
