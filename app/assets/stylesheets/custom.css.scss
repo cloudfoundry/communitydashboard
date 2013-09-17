@@ -12,7 +12,6 @@
 
 .li-spinner {
   float:left;
-
 }
 
 li:first-child {
@@ -24,8 +23,6 @@ li:last-child {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
 }
-
-
 
 .li-pull {
   display: block;
@@ -58,4 +55,8 @@ li:last-child {
 
 .repolink {
   color: darkblue;
+}
+
+.no-desc {
+  color: gray;
 }

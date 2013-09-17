@@ -69,8 +69,6 @@ PullRequestList = {
     $('ul').html(elements)
 
     $('ul li').each(function(value, element){
-        console.log(value + "::" + element );
-
         var target = element.getElementsByClassName('li-spinner')[0];
         var spinner = new Spinner(opts).spin(target);
 
@@ -84,7 +82,12 @@ PullRequestList = {
             $(element.getElementsByClassName('li-spinner')[0]).hide();
             var url = element.textContent;
             var repo = 'cloudfoundry/' + pr_data[element.textContent].repo;
-            $(element).html('<a class="repolink" href=https://github.com/'+repo+'>'+repo+'</a> - <a href='+url+'>'+response.title+'</a>');
+
+            var html = '<a class="repolink" href=https://github.com/'+repo+'>'+repo+'</a> - ';
+            html += '<a href='+url+'>'+response.title+'</a>';
+            html += (response.body==null || response.body=='' ? '<div class="no-desc">No description available</div>' : '<div>'+response.body+'</div>');
+
+            $(element).html(html);
           },
           failure: function(){
           }

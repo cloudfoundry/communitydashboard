@@ -1,4 +1,6 @@
 module PullRequestHelper
+  extend ActionView::Helpers::TextHelper
+
   def self.fetch(token, org)
     result = {}
     fetch_url_list(token, org).each do |url|
@@ -16,7 +18,7 @@ module PullRequestHelper
     client = Octokit::Client.new(access_token: token, auto_paginate: true)
     pr = client.pull("#{params[:org]}/#{params[:repo]}", "#{params[:id]}")
 
-    response = {title: pr.title}
+    response = {title: pr.title, body: truncate( pr.body, length: 105 )}
     response.to_json
   end
 

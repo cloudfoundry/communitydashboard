@@ -27,14 +27,19 @@ describe PullRequestHelper do
 
   describe '.pull_request_data' do
     let(:params) { {org: 'org1', repo: 'repo1', id: 1} }
-    let(:response) { double('pull_request', title: 'some title') }
+    let(:response) do
+      double('pull_request',
+             title: 'some title',
+             body: 'some body'
+      )
+    end
 
     it 'returns details for a given pull request' do
       Octokit::Client.should_receive(:new).with(access_token: 'token1', auto_paginate: true).and_return(client)
 
       client.should_receive(:pull).with('org1/repo1', '1').and_return(response)
 
-      expect(PullRequestHelper.pull_request_data('token1', params)).to eq({title:'some title'}.to_json)
+      expect(PullRequestHelper.pull_request_data('token1', params)).to eq({title:'some title', body: 'some body'}.to_json)
     end
   end
 end
