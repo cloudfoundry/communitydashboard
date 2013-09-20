@@ -14,6 +14,10 @@ gem 'therubyracer'
 gem 'bootstrap-sass'
 gem 'octokit'
 gem 'underscore-rails'
+gem 'resque', require: "resque/server"
+gem 'resque-scheduler'
+gem 'resque-web'
+gem 'pg'
 
 group :doc do
   gem 'sdoc', require: false

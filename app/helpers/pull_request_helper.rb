@@ -1,24 +1,25 @@
 module PullRequestHelper
   extend ActionView::Helpers::TextHelper
 
-  def self.fetch(token, org)
-    result = {}
+  def self.fetch_pr_list(token, org)
+    pull_requests = {}
     fetch_url_list(token, org).each do |url|
       pr_data = parse_uri(url)
-      result[url] = {
+      pull_requests[url] = {
           org: pr_data[:org],
           repo: pr_data[:repo],
           id: pr_data[:id]
       }
     end
-    result
+    pull_requests
   end
 
-  def self.pull_request_data(token, params)
+  def self.fetch_pull_request_data(token, org, repo, pr_id)
     client = Octokit::Client.new(access_token: token, auto_paginate: true)
-    pr = client.pull("#{params[:org]}/#{params[:repo]}", "#{params[:id]}")
+    pr = client.pull("#{org}/#{repo}", "#{pr_id}")
 
-    response = {title: pr.title, body: truncate( pr.body, length: 105 )}
+    PullRequest.from_github_response(pr, org, repo)
+    #response = { title: pr.title, body: truncate( pr.body, length: 105 )}
     response.to_json
   end
 
