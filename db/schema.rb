@@ -14,9 +14,9 @@
 ActiveRecord::Schema.define(version: 20130920045620) do
 
   create_table "github_users", force: true do |t|
-    t.integer  "pull_requesst_id", null: false
-    t.string   "login",            null: false
-    t.integer  "github_user_id",   null: false
+    t.integer  "pull_request_id"
+    t.string   "login",           null: false
+    t.integer  "github_user_id",  null: false
     t.string   "gravatar_id"
     t.datetime "created_at"
     t.datetime "updated_at"

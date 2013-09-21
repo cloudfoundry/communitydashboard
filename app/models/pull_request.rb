@@ -1,7 +1,21 @@
 class PullRequest < ActiveRecord::Base
   has_one :github_user
 
-  attr_accessor :changes, :changed
+  def set_changed=(value)
+    @changed = value
+  end
+
+  def set_changes=(value)
+    @changes = value
+  end
+
+  def has_changed
+    @changed
+  end
+
+  def get_changes
+    @changes
+  end
 
   COMPARED_FIELDS = [
       :state,
@@ -27,7 +41,7 @@ class PullRequest < ActiveRecord::Base
     pr.state = response.state
     pr.title = response.title
     pr.body = response.body
-    pr.head = response.head
+    pr.head = response.head.sha
     pr.gh_created_at = response.created_at
     pr.gh_updated_at = response.updated_at
     pr.closed_at = response.closed_at
@@ -47,21 +61,21 @@ class PullRequest < ActiveRecord::Base
 
     other = PullRequest.find_by_github_id(pr.github_id)
     if other
-      pr.changes = check_for_changes(other, pr)
-      unless chagnges.empty?
-        pr.save!
-        pr.changed = true
+      pr.set_changes = check_for_changes(other, pr)
+      unless pr.get_changes.empty?
 
-        puts "updated #{pr.organization}/#{pr.repository}/#{pr.number} ot database"
+        other.update_attributes!(PullRequest.extract_update_hash(pr.get_changes))
+
+        pr.set_changed = true
       end
-
-      puts "no changes for #{pr.organization}/#{pr.repository}/#{pr.number}"
     else
-      pr = pr.save!
-      pr.changed = true
-      pr.user = GithubUser.create!(pull_request: pr, login: response.user.login, id: response.user.id, gravatar_id: response.user.gravatar_id)
-      puts "created #{pr.organization}/#{pr.repository}/#{pr.number} ot database"
+      pr.save!
+
+      GithubUser.create!(pull_request: pr, login: response.user.login, github_user_id: response.user.id, gravatar_id: response.user.gravatar_id)
+      pr.set_changed = true
     end
+
+    pr
   end
 
   def self.check_for_changes(old, new)
@@ -69,10 +83,20 @@ class PullRequest < ActiveRecord::Base
 
     COMPARED_FIELDS.each do |field|
       unless old.public_send(field) == new.public_send(field)
-        changes[field] = { old.public_send(field) => new.public_send(field) }
+        changes[field] = [old.public_send(field), new.public_send(field)]
       end
     end
 
     changes
+  end
+
+  private
+
+  def self.extract_update_hash(changes)
+    result = {}
+    changes.each do |key, value|
+      result[key] = value[1]
+    end
+    result
   end
 end
