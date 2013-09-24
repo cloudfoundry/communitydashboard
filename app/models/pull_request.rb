@@ -67,12 +67,18 @@ class PullRequest < ActiveRecord::Base
         other.update_attributes!(PullRequest.extract_update_hash(pr.get_changes))
 
         pr.set_changed = true
+
+        puts "updated '#{pr.title}'"
       end
+
+      puts "nothing to do for '#{pr.title}'"
     else
       pr.save!
 
       GithubUser.create!(pull_request: pr, login: response.user.login, github_user_id: response.user.id, gravatar_id: response.user.gravatar_id)
       pr.set_changed = true
+
+      puts "created '#{pr.title}'"
     end
 
     pr
@@ -88,6 +94,26 @@ class PullRequest < ActiveRecord::Base
     end
 
     changes
+  end
+
+  def url
+    "https://github.com/#{organization}/#{repository}/#{number}"
+  end
+
+  def repository_title
+    "#{organization}/#{repository}"
+  end
+
+  def repository_url
+    "https://github.com/#{organization}/#{repository}"
+  end
+
+  def gravatar_url
+    "https://www.gravatar.com/avatar/#{github_user.gravatar_id}?s=80"
+  end
+
+  def user_url
+    "https://github.com/#{github_user.login}"
   end
 
   private

@@ -1,6 +1,6 @@
 Communitydashboard::Application.routes.draw do
 
-  root to: 'home#show'
+  root to: 'pulls#index'
 
   resources :pulls
 

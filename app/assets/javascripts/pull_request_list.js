@@ -95,8 +95,8 @@ PullRequestList = {
     });
   }
 };
-
-$(document).ready(function(){
-    PullRequestList.fetchList();
-});
+//
+//$(document).ready(function(){
+//    PullRequestList.fetchList();
+//});
 

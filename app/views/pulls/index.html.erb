@@ -1,1 +1,34 @@
+<div class="container">
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <a class="brand" href="#">Cloudfoundry Community Dashboard</a>
+      </div>
+    </div>
+  </div>
+  <div class="pull-request-container">
+    <ul class="pr-list">
+      <% @pull_requests.each_with_index do |pr, idx| %>
+        <li class="li-pull">
+          <div class="pr-index"><%= idx+1 %></div>
+          <div class="pr-content">
+            <a class="repolink" href=<%= pr.repository_url %>><%= pr.repository_title %></a> -
+            <a href=<%= pr.url %>><%= pr.title %></a>
+            <div class="pr-number">#<%=pr.number%></div>
+            <% if pr.body %>
+              <div><%= truncate(pr.body, length: 105) %></div>
+            <% else %>
+              <div class="no-desc">No description available</div>
+            <% end %>
+            <a href=<%=pr.user_url%> class="gravatar">
+              <img height="16" src=<%=pr.gravatar_url%> width="16">
+            </a>
+            by
+            <a href=<%=pr.user_url%>><%=pr.github_user.login%></a>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
 

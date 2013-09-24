@@ -4,6 +4,12 @@ class PullRequestFetcher
   @queue = :medium
 
   def self.perform
+    puts "#{Time.now} - Performing databse update"
 
+    pr_list = PullRequestHelper.fetch_pr_list(ENV['GITHUB_TOKEN'], 'cloudfoundry')
+
+    pr_list.each do |url, data|
+      PullRequestHelper.create_or_update_pull_request(ENV['GITHUB_TOKEN'], data[:org], data[:repo], data[:id])
+    end
   end
 end

@@ -1,5 +1,5 @@
 fetch_all_the_pull_requests:
-  cron: "* * * * *"
+  cron: "*/10 * * * *"
   class: PullRequestFetcher
   queue: medium
   args:

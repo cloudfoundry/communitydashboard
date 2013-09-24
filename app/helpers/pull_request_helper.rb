@@ -14,12 +14,18 @@ module PullRequestHelper
     pull_requests
   end
 
-  def self.fetch_pull_request_data(token, org, repo, pr_id)
+  def self.create_or_update_pull_request(token, org, repo, pr_id)
     client = Octokit::Client.new(access_token: token, auto_paginate: true)
     pr = client.pull("#{org}/#{repo}", "#{pr_id}")
 
     PullRequest.from_github_response(pr, org, repo)
-    #response = { title: pr.title, body: truncate( pr.body, length: 105 )}
+  end
+
+  def self.fetch_pull_request_data(token, org, repo, pr_id)
+    client = Octokit::Client.new(access_token: token, auto_paginate: true)
+    pr = client.pull("#{org}/#{repo}", "#{pr_id}")
+
+    response = { title: pr.title, body: truncate( pr.body, length: 105 )}
     response.to_json
   end
 
