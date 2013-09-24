@@ -1,0 +1,6 @@
+fetch_all_the_pull_requests:
+  cron: "*/5 * * * *"
+  class: PullRequestFetcher
+  queue: medium
+  args:
+  description: "It fetches all the data we need for the pull requests"

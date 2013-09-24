@@ -2,11 +2,12 @@
 <html>
 <head>
   <title>Communitydashboard</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <img id="bg" src="/assets/bg-plain-x.jpg">
 
 <%= yield %>
 
