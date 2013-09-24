@@ -4,7 +4,7 @@ class PullRequestFetcher
   @queue = :medium
 
   def self.perform
-    puts "#{Time.now} - Performing databse update"
+    puts "#{Time.now} - Performing pull request data update"
 
     pr_list = PullRequestHelper.fetch_pr_list(ENV['GITHUB_TOKEN'], 'cloudfoundry')
 

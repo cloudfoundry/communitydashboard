@@ -18,6 +18,7 @@ gem 'resque', require: "resque/server"
 gem 'resque-scheduler'
 gem 'resque-web'
 gem 'pg'
+gem 'rails_admin'
 
 group :doc do
   gem 'sdoc', require: false
@@ -44,3 +45,6 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+
+gem "devise"
