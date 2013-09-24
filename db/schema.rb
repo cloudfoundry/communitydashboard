@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130924050803) do
+ActiveRecord::Schema.define(version: 20130924052102) do
 
   create_table "github_users", force: true do |t|
     t.integer  "pull_request_id"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20130924050803) do
     t.string   "repository"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "update_available"
   end
 
   create_table "rails_admin_histories", force: true do |t|

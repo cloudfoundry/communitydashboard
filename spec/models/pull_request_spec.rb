@@ -21,6 +21,10 @@ describe PullRequest do
       it 'marks the returned PR as changed' do
         expect(PullRequest.from_github_response(response, 'org', 'repo').has_changed).to be_true
       end
+
+      it 'sets the update_available flag' do
+        expect( PullRequest.from_github_response(response, 'org', 'repo').update_available ).to be_true
+      end
     end
 
     context 'when the PR is already stored in the database' do
@@ -75,6 +79,14 @@ describe PullRequest do
 
         it 'returns the changed fields' do
           expect(PullRequest.from_github_response(response2, 'org', 'repo').get_changes).to_not be_empty
+        end
+
+        it 'alters the update_available flag' do
+          old = PullRequest.first
+          old.update_attribute('update_available', false)
+
+          expect{ PullRequest.from_github_response(response2, 'org', 'repo') }.
+              to change{PullRequest.first.update_available}.from(false).to(true)
         end
       end
     end

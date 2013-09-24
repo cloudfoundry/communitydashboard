@@ -63,22 +63,24 @@ class PullRequest < ActiveRecord::Base
     if other
       pr.set_changes = check_for_changes(other, pr)
       unless pr.get_changes.empty?
-
         other.update_attributes!(PullRequest.extract_update_hash(pr.get_changes))
 
+        other.set_changes = pr.get_changes
+        pr = other
         pr.set_changed = true
 
-        puts "updated '#{pr.title}'"
+        #puts "updated '#{pr.title}'"
+      else
+        #puts "nothing to do for '#{pr.title}'"
       end
-
-      puts "nothing to do for '#{pr.title}'"
     else
+      pr.update_available = true
       pr.save!
 
       GithubUser.create!(pull_request: pr, login: response.user.login, github_user_id: response.user.id, gravatar_id: response.user.gravatar_id)
       pr.set_changed = true
 
-      puts "created '#{pr.title}'"
+      #puts "created '#{pr.title}'"
     end
 
     pr
@@ -123,6 +125,7 @@ class PullRequest < ActiveRecord::Base
     changes.each do |key, value|
       result[key] = value[1]
     end
+    result[:update_available] = true
     result
   end
 end
