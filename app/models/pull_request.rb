@@ -36,28 +36,28 @@ class PullRequest < ActiveRecord::Base
   def self.from_github_response(response, organization, repository)
     pr = PullRequest.new
 
-    pr.github_id = response.id
-    pr.number = response.number
-    pr.state = response.state
-    pr.title = response.title
-    pr.body = response.body
-    pr.head = response.head.sha
-    pr.gh_created_at = response.created_at
-    pr.gh_updated_at = response.updated_at
-    pr.closed_at = response.closed_at
-    pr.merged_at = response.merged_at
+    pr.github_id        = response.id
+    pr.number           = response.number
+    pr.state            = response.state
+    pr.title            = response.title
+    pr.body             = response.body
+    pr.head             = response.head.sha
+    pr.gh_created_at    = response.created_at
+    pr.gh_updated_at    = response.updated_at
+    pr.closed_at        = response.closed_at
+    pr.merged_at        = response.merged_at
     pr.merge_commit_sha = response.merge_commit_sha
-    pr.merged = response.merged
-    pr.mergeable = response.mergeable
-    pr.mergeable_state = response.mergeable_state
-    pr.comments = response.comments
-    pr.review_comments = response.review_comments
-    pr.commits = response.commits
-    pr.additions = response.additions
-    pr.deletions = response.deletions
-    pr.changed_files = response.changed_files
-    pr.organization = organization
-    pr.repository = repository
+    pr.merged           = response.merged
+    pr.mergeable        = response.mergeable
+    pr.mergeable_state  = response.mergeable_state
+    pr.comments         = response.comments
+    pr.review_comments  = response.review_comments
+    pr.commits          = response.commits
+    pr.additions        = response.additions
+    pr.deletions        = response.deletions
+    pr.changed_files    = response.changed_files
+    pr.organization     = organization
+    pr.repository       = repository
 
     other = PullRequest.find_by_github_id(pr.github_id)
     if other
@@ -66,8 +66,8 @@ class PullRequest < ActiveRecord::Base
         other.update_attributes!(PullRequest.extract_update_hash(pr.get_changes))
 
         other.set_changes = pr.get_changes
-        pr = other
-        pr.set_changed = true
+        pr                = other
+        pr.set_changed    = true
 
         #puts "updated '#{pr.title}'"
       else
@@ -99,7 +99,7 @@ class PullRequest < ActiveRecord::Base
   end
 
   def url
-    "https://github.com/#{organization}/#{repository}/#{number}"
+    "https://github.com/#{organization}/#{repository}/pull/#{number}"
   end
 
   def repository_title

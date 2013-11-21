@@ -1,6 +1,16 @@
 require 'spec_helper'
 
 describe PullRequest do
+  let(:organization) { 'ballin_org' }
+  let(:repository) { 'ballin_repository' }
+  let(:number) { 1337 }
+  let(:github_user) do
+    gu = GithubUser.new
+    gu.gravatar_id = 'fravatar_id'
+    gu.login       = 'githubuser_login'
+    gu
+  end
+
   describe '.from_github_response' do
     let(:response) {
       double( :something,
@@ -116,4 +126,20 @@ describe PullRequest do
       })
     end
   end
+
+  subject do
+    pr              = PullRequest.new
+    pr.organization = organization
+    pr.repository   = repository
+    pr.number       = number
+    pr.github_user  = github_user
+    pr
+  end
+
+  its(:url)              { should eq "https://github.com/ballin_org/ballin_repository/pull/1337" }
+  its(:repository_title) { should eq "ballin_org/ballin_repository" }
+  its(:repository_url)   { should eq "https://github.com/ballin_org/ballin_repository" }
+  its(:gravatar_url)     { should eq "https://www.gravatar.com/avatar/fravatar_id?s=80" }
+  its(:user_url)         { should eq "https://github.com/githubuser_login" }
+
 end
